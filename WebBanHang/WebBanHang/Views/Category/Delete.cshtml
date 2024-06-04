@@ -2,7 +2,7 @@
     <partial name="_Notification" />
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />
-    <h2>Confirm to Delete Category</h2>
+    <h2> Xóa Sản Phẩm</h2>
     <hr />
     <div class="form-group">
         <label>Name</label>
@@ -13,6 +13,6 @@
 
         <input asp-for="DisplayOrder" disabled class="form-control" />
     </div>
-    <button type="submit" class="btn btn-danger"> Delete </button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <button type="submit" class="btn btn-danger"> Xóa </button>
+    <a asp-action="Index" class="btn btn-secondary">Trở Lại</a>
 </form>

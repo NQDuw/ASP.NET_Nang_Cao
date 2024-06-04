@@ -34,7 +34,7 @@ namespace WebBanHang.Controllers
                 //thêm category vào table Categories
                 _db.Categories.Add(category);
                 _db.SaveChanges();
-            TempData["success"] = "Category inserted success";
+            TempData["success"] = "Thêm Thành Công";
                 return RedirectToAction("Index");
             }
             return View();
@@ -58,7 +58,7 @@ namespace WebBanHang.Controllers
                 //cập nhật category vào table Categories
                 _db.Categories.Update(category);
                 _db.SaveChanges();
-                TempData["success"] = "Category updated success";
+                TempData["success"] = "Sửa Thành Công";
                 return RedirectToAction("Index");
             }
             return View();
@@ -83,7 +83,7 @@ namespace WebBanHang.Controllers
             }
             _db.Categories.Remove(category);
             _db.SaveChanges();
-            TempData["success"] = "Category deleted success";
+            TempData["success"] = "Xóa Thành Công";
             return RedirectToAction("Index");
         }
     
