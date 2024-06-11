@@ -22,20 +22,21 @@ namespace WebBanHang.Controllers
                 _hosting = hosting;
             }
             //Hiển thị danh sách sản phẩm
-            public IActionResult Index(int ?page)
+            public IActionResult Index(int ?page ,string textsearch="")
             {
-            //var pageIndex = (int)(page != null ? page : 1);
-            //var pageSize = 10;
-            //var productList = _db.Products.Include(x => x.Category).ToList();
-            ////Thống kê số trang
-            ////var pageSum =(int) Math.Ceiling((Decimal)productList.Count / pagesize);
-            //var pageSum = productList.Count() / pageSize + (productList.Count() % pageSize > 0 ? 1 : 0);
-            //// Truyền dữ liệu cho View
-            //ViewBag.pageSum = pageSum;
-            //ViewBag.pageIndex = pageIndex;
-            //return View(productList.Skip((pageIndex-1)*pageSize).Take(pageSize).ToList());
-            return View("showAll");
-            }
+            var pageIndex = (int)(page != null ? page : 1);
+            var pageSize = 10;
+            var productList = _db.Products.Include(x => x.Category).Where(p=>p.Name.ToLower().Contains(textsearch.ToLower())).ToList();
+            //Thống kê số trang
+            //var pageSum =(int) Math.Ceiling((Decimal)productList.Count / pagesize);
+            var pageSum = productList.Count() / pageSize + (productList.Count() % pageSize > 0 ? 1 : 0);
+            // Truyền dữ liệu cho View
+            ViewBag.pageSum = pageSum;
+            ViewBag.pageIndex = pageIndex;
+            return View(productList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList())
+            ;
+            //return View("showAll");
+        }
             //Hiển thị form thêm sản phẩm mới
             public IActionResult Add()
             {

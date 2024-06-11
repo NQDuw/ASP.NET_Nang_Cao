@@ -20,7 +20,7 @@
 <script>
     $(document).ready(function () {
         $.ajax({
-            url: "/Product/GetAll",
+            url: "/Admin/Product/GetAll",
             success: function (data) {
                 $('#myTable').DataTable({
                     data: data,
@@ -35,7 +35,7 @@
                         {
                             data: 'imageUrl', render: function (data) {
                                 if (data != null)
-                                    return '<img src="' + data + '" style="width:100px" >';
+                                    return '<img src="/' + data + '" style="width:100px" >';
                                 else
                                     return '';
                             }
