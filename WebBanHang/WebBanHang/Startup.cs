@@ -28,6 +28,7 @@ namespace WebBanHang
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(
         op => op.UseSqlServer("name=DefaultConnection"));
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,12 +50,12 @@ namespace WebBanHang
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                name: "MyAreas",
-               pattern: "{area=admin}/{controller=category}/{action=Index}/{id?}");
+               pattern: "{area=customer}/{controller=home}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using WebBanHang.Helpers;
 using WebBanHang.Models;
 
 namespace WebBanHang.Controllers
@@ -20,10 +22,20 @@ namespace WebBanHang.Controllers
             _db = db;
         }
         // hien thi dnah sach tat ca san pham
-        public IActionResult Index()
+        public IActionResult Index(int? page, string textsearch = "")
         {
-            var productList = _db.Products.ToList();
-            return View(productList);
+            var pageIndex = (int)(page != null ? page : 1);
+            var pageSize = 8;
+            var productList = _db.Products.Include(x => x.Category).Where(p => p.Name.ToLower().Contains(textsearch.ToLower())).ToList();
+            //Thống kê số trang
+            //var pageSum =(int) Math.Ceiling((Decimal)productList.Count / pagesize);
+            var pageSum = productList.Count() / pageSize + (productList.Count() % pageSize > 0 ? 1 : 0);
+            // Truyền dữ liệu cho View
+            ViewBag.pageSum = pageSum;
+            ViewBag.pageIndex = pageIndex;
+            return View(productList.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList())
+            ;
+
         }
         // hien thi dnah sach tat ca san pham co gia thap nhat
         //public IActionResult Index()
