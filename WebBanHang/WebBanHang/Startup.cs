@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +28,19 @@ namespace WebBanHang
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationDbContext>(
-        op => op.UseSqlServer("name=DefaultConnection"));
+            services.AddDbContext<ApplicationDbContext>(op => op.UseSqlServer("name=DefaultConnection"));
             services.AddSession();
+            //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddRazorPages();
+            services.ConfigureApplicationCookie(op =>
+            {
+                op.LoginPath = "/Identity/Account/Login";
+                op.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                op.LogoutPath = "//Identity/Account/Logout";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,13 +58,14 @@ namespace WebBanHang
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+            
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                name: "MyAreas",
                pattern: "{area=customer}/{controller=home}/{action=Index}/{id?}");

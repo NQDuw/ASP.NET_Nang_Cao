@@ -8,6 +8,7 @@ using WebBanHang.Helpers;
 
 namespace WebBanHang.Areas.customer.Controllers
 {
+    [Area("Customer")]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _db;
